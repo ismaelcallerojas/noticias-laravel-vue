@@ -5,22 +5,22 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         token: '',
-        // Users
+        // Usuarios
         users: [],
         user: false, // auth. user 
         userPermission: false,
-        // Posts
+        // Noticias
         allPosts: [],
-        posts: [],  // paginated
-        total: 6, // pagination - posts per page 
-        // Roles, Tags, Categories
+        posts: [],  // paginado
+        total: 6, // paginación - publicaciones por página
+        // Roles, Etiquetas, Categorías
         roles: [],
         categories: [],
         tags: [],
         
         // UI
         sideBarOpen: false,
-        // Delete modal data
+        // Eliminar datos modales
         deleteModalObj : {
             showDeleteModal: false, 
             deleteUrl : '', 
@@ -33,7 +33,7 @@ export default new Vuex.Store({
         avatarModal: false
     },
     getters: {
-        // Users
+        // Usuarios
         getUser(state){
             return state.user
         },
@@ -43,7 +43,7 @@ export default new Vuex.Store({
         getUserPermission(state){
             return state.userPermission
         },
-        // Posts
+        // Noticias
         getPosts(state){
             return state.posts
         },
@@ -54,11 +54,11 @@ export default new Vuex.Store({
         getRoles(state){
             return state.roles
         },
-        // Categories
+        // Categorias
         getCategories(state){
             return state.categories
         },
-        // Tags
+        // Etiquetas
         getTags(state){
             return state.tags
         },
@@ -70,9 +70,9 @@ export default new Vuex.Store({
             return state.deleteModalObj
         },        
     },
-    // Actions - call mutations
+    // Acciones - mutaciones de llamadas
     actions: {
-        // Users
+        // Usuarios
         setUser({commit},data) {
             commit('setUser',data);
         },
@@ -87,9 +87,9 @@ export default new Vuex.Store({
             context.commit('toggleSidebar');
         },
     },
-    // Mutations - directly change state
+    // Mutaciones - cambio directo de estado
     mutations: {
-        // Users
+        // Usuarios
         setUser(state, data){
             state.user = data
         },
@@ -102,7 +102,7 @@ export default new Vuex.Store({
         setUserAvatar(state, data){
             state.user.avatar = data
         },
-        // Posts
+        // Noticias
         setPosts(state, data){
             state.posts = data
         },
@@ -113,11 +113,11 @@ export default new Vuex.Store({
         setRoles(state, data){
             state.roles = data
         },
-        // Categories
+        // Categorias
         setCategories(state, data){
             state.categories = data
         },
-        // Tags
+        // Etiquetas
         setTags(state, data){
             state.tags = data
         },

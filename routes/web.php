@@ -21,7 +21,7 @@ use App\Http\Middleware\AdminCheck;
 |
 */
 
-// Home (blog)
+// Inicio (Noticiero)
 Route::get('/',[HomeController::class,'index']);
 Route::get('/getPosts',[HomeController::class,'getPosts']);
 Route::get('/getCategories',[HomeController::class,'getCategories']);
@@ -31,16 +31,16 @@ Route::get('/tags/{tagName}/{id}',[HomeController::class,'tagIndex']);
 Route::get('/users/{userName}/{id}',[HomeController::class,'userIndex']);
 Route::get('/searchStr',[HomeController::class,'search']);
 
-// Auth
+// Autorización
 Route::post('login', [AuthController::class,'login']);
 Route::post('auth',[AuthController::class,'auth']);
 Route::post('logout', [AuthController::class,'logout']);
 
-// Admin Panel
+//  Panel de Administración
 Route::prefix('/app')->middleware([AdminCheck::class])->group(function(){
-    // Admin main page/'
+    // Página principal de administración/'
     Route::get('/', [AuthController::class,'index']);
-    // Users
+    // Ususarios
     Route::get('get_users', [UserController::class,'index']);
     Route::post('create_user', [UserController::class,'store']);
     Route::post('update_user', [UserController::class,'update']);
@@ -51,29 +51,29 @@ Route::prefix('/app')->middleware([AdminCheck::class])->group(function(){
     Route::post('update_role', [RoleController::class,'update']);
     Route::post('delete_role', [RoleController::class,'destroy']);
     Route::post('assign_roles', [RoleController::class,'assign']);
-    // Tags
+    // Etiquetas
     Route::get('get_tags', [TagController::class,'index']);
     Route::post('create_tag', [TagController::class,'store']);
     Route::post('update_tag', [TagController::class,'update']);
     Route::post('delete_tag', [TagController::class,'destroy']);
-    // Categories
+    // Categorias
     Route::get('get_categories', [CategoryController::class,'index']);
     Route::post('create_category', [CategoryController::class,'store']);
     Route::post('update_category', [CategoryController::class,'update']);
     Route::post('delete_category', [CategoryController::class,'destroy']);
-    // Posts
+    // Publicaciones
     Route::get('get_posts', [PostController::class,'index']);
     Route::post('create_post', [PostController::class,'store']);
     Route::get('show_post/{id}', [PostController::class,'show']);
     Route::post('update_post/{id}', [PostController::class,'update']);
     Route::post('delete_post', [PostController::class,'destroy']);
-    // Images
+    // Imagenes
     Route::post('upload', [Controller::class,'upload']);
     Route::post('delete_image', [Controller::class,'deleteImage']);
     Route::post('update_avatar', [UserController::class,'updateAvatar']);
 });
-// To upload imgs from Editor.js image add this route name in middleware/VerifyCsrfToken 
-// Name of the path must match the name of the route /app/createpost
+// Para cargar imágenes desde Editor.js, agregue este nombre de ruta en middleware/VerifyCsrfToken
+// El nombre de la ruta debe coincidir con el nombre de la ruta /app/createpost
 Route::post('/app/createpost', [PostController::class,'uploadEditorImage']);
 Route::post('/app/editpost/{slug}', [PostController::class,'uploadEditorImage']);
 

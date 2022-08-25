@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="es">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +8,7 @@
         <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
         <link rel="manifest" href="/icons/site.webmanifest">
-        <!-- Main css file  load secure asset -https if in production -->  
+        <!-- El archivo css principal carga el activo seguro -https si está en producción-->  
  	    @if(env('APP_ENV') == 'production')
         <link rel="stylesheet" href="{{ secure_asset('css/app.css') }}">
         @else  

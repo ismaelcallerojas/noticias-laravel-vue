@@ -1,9 +1,9 @@
-/* This file is used as mixin in app.js and contains methods shared by vue components.
-    Mehods should be called in the same way as internal component methods (this.methodName)*/
+/* Este archivo se usa como mixin en app.js y contiene métodos compartidos por los componentes de vue.
+    Los métodos deben llamarse de la misma manera que los métodos de componentes internos (this.methodName)*/
 import { mapGetters } from 'vuex';
 export default {
     methods: {
-        // Primary method for sending request to the server
+        // Método principal para enviar la solicitud al servidor
         async callApi(method, url, dataObj ){
             try {
               return await axios({
@@ -16,7 +16,7 @@ export default {
             }
         },
  
-        // ViewUI methods used to display notifications,
+        // Métodos ViewUI utilizados para mostrar notificaciones,
         i(desc, title="Hey") {
             this.$Notice.info({
                 title: title,
@@ -67,9 +67,9 @@ export default {
 			});
 		},
 
-        // Check if user has permission to create/read/update/delete  
+        // Compruebe si el usuario tiene permiso para crear/leer/actualizar/eliminar  
         checkUserPermission(key){
-            // If no permissions object allow all / else find permision name matchnig current route name , if key(c,r,u,d) is true break and return true
+            // Si no hay ningún objeto de permisos, permita que todo / de lo contrario encuentre el nombre del permiso que coincida con el nombre de la ruta actual, si la clave (c, r, u, d) es verdadera, rompa y devuelva verdadero
             if(!this.userPermission) return true;
             let isPermitted = false;
             for(let d of this.userPermission){
