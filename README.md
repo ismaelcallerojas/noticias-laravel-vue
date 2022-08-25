@@ -50,4 +50,14 @@ php artisan db:seed --class=DatabaseSeeder
 ```
 
 ## Capturas
+- Inicio
 ![Screenshot](inicio.png)
+
+- Login
+![Screenshot](login.png)
+
+- Panel de administración
+![Screenshot](admin.png)
+
+- Administración de Usuarios 
+- ![Screenshot](users.png)
