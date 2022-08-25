@@ -43,7 +43,7 @@ class CategoryController extends Controller
 
     public function destroy(Request $request)
     {
-        // First delete the original file from the server (deleteFileFromServer method is located in Contoller class)
+        // Primero elimine el archivo original del servidor (el método deleteFileFromServer se encuentra en la clase Contoller)
         $this->deleteFileFromServer($request->iconImage); 
          
         $this->validate($request, [

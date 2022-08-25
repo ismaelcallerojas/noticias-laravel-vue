@@ -38,11 +38,11 @@ class PostController extends Controller
 
         $postCategories = [];
         $postTags = [];
-        /* You may use the transaction method on the DB facade to run a set of operations 
-            within a database. If an exception is thrown within the transaction Closure,
-            the transaction will automatically be rolled back (no data gets inserted)
-            If you would like to begin a transaction manually and have complete control 
-            over rollbacks and commits, you may use the beginTransaction */
+        /* Puede usar el método de transacción en la fachada de DB para ejecutar un conjunto de operaciones
+            dentro de una base de datos. Si se lanza una excepción dentro del cierre de la transacción,
+            la transacción se revertirá automáticamente (no se insertan datos)
+            Si desea iniciar una transacción manualmente y tener un control completo
+            sobre reversiones y confirmaciones, puede usar beginTransaction */
         DB::beginTransaction();
         try {
             $post = Post::create([
@@ -56,25 +56,25 @@ class PostController extends Controller
                 'featuredImage' => $request->featuredImage ?? null
             ]);
 
-            // insert post tags 
+            // insertar etiquetas de publicación
             foreach($tags as $t){
                 array_push($postTags, ['tag_id' => $t, 'post_id' => $post->id]);
             }
             PostTag::insert($postTags);    
 
-            // insert categories (must add created/updated_at manually)
+            // insertar categorías (debe agregar created/updated_at manualmente)
             foreach($categories as $c){
                 array_push($postCategories, ['category_id' => $c, 'post_id' => $post->id]);
             }
 
-            // Use insert insted of create when using transaction
+            // Use insert en lugar de crear cuando use transacción
             PostCategory::insert($postCategories); 
             
  
-            DB::commit(); // Commit transaction
+            DB::commit(); // Confirmar transacción
             return 'Post Created';
         } catch (\Throwable $th) {
-            DB::rollback(); // In case of errors rollback all changes
+            DB::rollback(); // En caso de errores, revierte todos los cambios
             return $th;
         }
     }
@@ -103,7 +103,7 @@ class PostController extends Controller
         
         $post = Post::where('id', $id)->first();
         if($post->featuredImage && $post->featuredImage != $request->featuredImage){
-            $this->deleteFileFromServer($post->featuredImage); // delete old imagefile from the server
+            $this->deleteFileFromServer($post->featuredImage); //eliminar el archivo de imagen antiguo del servidor
         }
 
         DB::beginTransaction();
@@ -119,11 +119,11 @@ class PostController extends Controller
             ]);
 
 
-            // insert categories
+            // insertar categorías
             foreach ($categories as $c) {
                 array_push($postCategories, ['category_id' => $c, 'post_id' => $id]);
             }
-            // delete all previous categories
+            // eliminar todas las categorías anteriores
             PostCategory::where('post_id', $id)->delete();
             PostCategory::insert($postCategories);
             
@@ -134,7 +134,7 @@ class PostController extends Controller
             Posttag::insert($postTags);
 
             DB::commit();
-            return 'Post Updated';
+            return 'Publicación actualizada';
         } catch (\Throwable $e) {
             DB::rollback();
             return $e;
@@ -153,7 +153,7 @@ class PostController extends Controller
 
 
         
-    // Editor.js image upload
+    //carga de imagen del Editor.js 
     public function uploadEditorImage(Request $request){
         
         $this->validate($request, [
@@ -162,7 +162,7 @@ class PostController extends Controller
         $picName = time().'.'.$request->image->extension();
         $request->image->move(public_path('uploads'),$picName );
 
-        // Editor js (Vue wrapper) json object ( allows to display image back in the Vue component)
+        // Editor js (Vue wrapper) objeto json (permite mostrar la imagen en el componente Vue)
         return response()->json([
             'success' => 1, 
             'file' => [
@@ -171,13 +171,13 @@ class PostController extends Controller
         ]);
         
 
-        /* TO DO - REMOVE UNUSED IMAGES
-        remove unused images that arent saved in the post :
-        1 make temp_image_table
-        2 whenever an image is uploaded add to temp_image_table id : 1, img: 34322.png
-        3 before creating resource check if you have any image for that resource in temp_image_table,
-        you can get this images and delete at the end 
-        4 upload image
+        /* QUE HACER - ELIMINAR IMÁGENES NO UTILIZADAS
+        elimine las imágenes no utilizadas que no están guardadas en la publicación:
+        1 hacer temp_image_table
+        2 siempre que se cargue una imagen, agregue a temp_image_table id: 1, img: 34322.png
+        3 antes de crear el recurso, verifique si tiene alguna imagen para ese recurso en temp_image_table,
+        puedes obtener estas imágenes y eliminarlas al final
+        4 subir imagen
         */
     }
 }

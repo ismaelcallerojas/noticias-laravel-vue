@@ -11,19 +11,19 @@ class AuthController extends Controller
 
     public function index(Request $request)
     {
-        // first check if you are loggedin and admin user ... 
+        // primero verifique si ha iniciado sesión y es usuario administrador ... 
         if(!Auth::check() && $request->path() != '/login'){
-            return redirect('/login'); // not logged in and not on the login page (redirect to login)
+            return redirect('/login'); // no iniciado sesión y no en la página de inicio de sesión (redirigir para iniciar sesión)
         }
         if(!Auth::check() && $request->path() == '/login' ){
-            return view('index'); // not logged in and already on main page (render main page)
+            return view('index'); // no ha iniciado sesión y ya está en la página principal (render a la página principal)
         }
-        // you are already logged in... so check for if you are an admin user.. 
+        // ya ha iniciado sesión... así que verifique si es un usuario administrador...
         $user = Auth::user();
         
         if($user->role->isAdmin == 0){
             return redirect('/'); 
-            // return redirect('/login'); 
+            // redireccionar al('/login'); 
         }
         if($request->path() == 'login'){
             return redirect('/');
@@ -41,7 +41,7 @@ class AuthController extends Controller
             return response()->json(['user'=> $user,'role' => $role]);
         }
         else{
-            return response()->json(['user'=> false, 'msg'=>'User is not authenticated']);
+            return response()->json(['user'=> false, 'msg'=>'El usuario no está autenticado']);
         }
     }
 
@@ -55,25 +55,25 @@ class AuthController extends Controller
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $user = Auth::user();
 
-            // Automatically logout if user role isn't admin type
+            // Cerrar sesión automáticamente si el rol de usuario no es de tipo administrador
             if($user->role->isAdmin == 0){
                 // Auth::logout();
                 return response()->json([
                     'redirect' => '/', 
-                    'msg' => 'User, You are logged in', 
+                    'msg' => 'Usuario, Estás logueado', 
                     'user' => $user,
                     'role' => $user->role
                 ]);
             }
             return response()->json([
                 'redirect' => '/app', 
-                'msg' => 'Admin, You are logged in', 
+                'msg' => 'Administrador, Estás logueado', 
                 'user' => $user,
                 'role' => $user->role
             ]);
         }else{
             return response()->json([
-                'msg' => 'Incorrect login details', 
+                'msg' => 'Datos de inicio de sesión incorrectos', 
             ], 401);
         }
     }
@@ -82,7 +82,7 @@ class AuthController extends Controller
     public function logout(){
         Auth::logout();
         return response()->json([
-            'msg' => 'Logout succesfull', 
+            'msg' => 'Cierre de sesión exitoso', 
         ], 200);
         return redirect('/');
     }

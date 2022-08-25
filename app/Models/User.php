@@ -44,8 +44,8 @@ class User extends Authenticatable
     ];
 
 
-    // Relationships
-    // belongsTo - reversed OneToOne relationship , many users can share the same role ( but can have only one role)
+    // Relaciones
+    // belongsTo - relación uno a uno invertida ,muchos usuarios pueden compartir el mismo rol (pero solo pueden tener un rol)
     public function role(){
         return $this->belongsTo(Role::class); 
     }

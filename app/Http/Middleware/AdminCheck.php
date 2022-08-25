@@ -18,11 +18,11 @@ class AdminCheck
     public function handle(Request $request, Closure $next)
     {   
         if($request->path() == '/login'){
-            return $next($request); // go to the next middleware
+            return $next($request); // ir al siguiente  middleware
         }
 
         if(!Auth::check()){
-            // return redirect('/login');
+            // redireccionar al ('/login');
             return response()->json([
             'msg' => 'Accesso Denegado ... ',
             'url' => $request->path()
@@ -30,14 +30,14 @@ class AdminCheck
         }
 
         $user = Auth::user();
-        //  Use users role relation; if user is not an admin deny access 
+        //  Utilice la relación de roles de los usuarios; si el usuario no es un administrador denegar el acceso
         if($user->role->isAdmin == 0){
             return response()->json([
                 'msg' => 'Accesso Denegado ... ',
                 'url' => $request->path()   
             ], 403);
         }elseif ($user->role->isAdmin == 1) {
-            // if user's role is of admin type (isAdmin is 1) return go to the next middleware
+            // si el rol del usuario es de tipo administrador  (isAdmin is 1) volver ir al siguiente  middleware
             return $next($request); 
         }
         }

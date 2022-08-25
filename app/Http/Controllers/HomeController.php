@@ -24,7 +24,7 @@ class HomeController extends Controller
     }
 
     public function postSingle(Request $request, $slug){
-        // get post with related user,category and tag data
+        // obtener una publicación con datos relacionados con el usuario, la categoría y la etiqueta
         $post = Post::where('slug', $slug)->with(['cat','tag' , 'user'])->first(['id', 'title', 'post', 'user_id', 'featuredImage','created_at']);
         
         $category_ids = [];
@@ -32,9 +32,9 @@ class HomeController extends Controller
             array_push($category_ids, $cat->id);
         }
 
-        // GET RELATED posts /('id', '!=', $post->id) - excluding currently visited one
-        /* whereHas() is similiar to has() but allows you to specify additional filters for the related model to check
-        ('cat'  and 'user' are post's relations, $q query instance), use() - specifies variables used in closure  */
+        // OBTENER publicaciones RELACIONADAS /('id', '!=', $post->id) - excluyendo la visitada actualmente
+        /* whereHas() es similar a has() pero le permite especificar filtros adicionales para el modelo relacionado para verificar
+        ('cat' y 'usuario' son relaciones de publicación, instancia de consulta $q), use() - especifica las variables utilizadas en el cierre */
         $relatedPosts = Post::with('user')->where('id', '!=', $post->id)->whereHas('cat', function($q) use($category_ids){
             $q->whereIn('category_id',$category_ids);
         })->limit(5)->orderBy('id','desc')->get((['id', 'title', 'postExcerpt', 'slug', 'user_id', 'featuredImage']));
@@ -45,7 +45,7 @@ class HomeController extends Controller
     public function categoryIndex(Request $request, $categoryName, $id)
     {
         $posts = Post::with(['tag', 'cat','user'])->whereHas('cat', function($q) use($id){
-            $q->where('category_id',$id); // use() method is needed to pass variables to the closure
+            $q->where('category_id',$id); // use() se necesita el método para pasar variables al cierre
         })->orderBy('id','desc')->select(['id', 'title', 'postExcerpt', 'slug', 'user_id', 'featuredImage','created_at'])->paginate($request->total);
         return response()->json([ 'posts' => $posts, 'categoryName' => $categoryName]); 
     }
@@ -74,17 +74,17 @@ class HomeController extends Controller
         $posts->when($str!='', function($q) use($str){
             $q->where('title','LIKE',"%$str%")
             ->orWhereHas('cat', function($q) use($str){
-                // this will search 'cat' relation pivot table
+                // esto buscará la tabla dinámica de relación 'cat'
                 $q->where('categoryName','LIKE',"%$str%");
             })
             ->orWhereHas('tag', function($q) use($str){
-                // this will search 'tag' relation pivot table
+                // esto buscará la tabla dinámica de relación 'tag'
                 $q->where('tagName','LIKE',"%$str%");
             });
         });
  
         $posts = $posts->paginate($request->total); 
-        // use appends to get correct url when using pagination with vue (otherwise query str= will get removed)
+        // use anexos para obtener la URL correcta cuando use la paginación con vue (de lo contrario, se eliminará la consulta str =)
         $posts = $posts->appends($request->all()) ; 
    
         return response()->json(['posts' => $posts]);

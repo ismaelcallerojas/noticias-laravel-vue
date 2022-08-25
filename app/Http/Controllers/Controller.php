@@ -13,9 +13,9 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
-    // IMAGES 
+    // IMAGENES
     
-    // Upload Images
+    // Subida de Imagenes
     public function upload(Request $request){
         $this->validate($request, [
             'file' => 'required|mimes:jpeg,jpg,png'
@@ -26,7 +26,7 @@ class Controller extends BaseController
     }
 
 
-    // Handle deletion of image from server for add/edit category
+    // Manejar la eliminación de la imagen del servidor para agregar/editar categoría
     public function deleteImage(Request $request){
         $fileName = $request->imageName; 
         $this->deleteFileFromServer($fileName);

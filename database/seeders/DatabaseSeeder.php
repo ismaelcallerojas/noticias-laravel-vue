@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        // Db must be seeded in this order : 1-roles, 2-users, 3-categories & tags
+        //La base de datos debe sembrarse en este orden: 1 rol, 2 usuarios, 3 categorías y etiquetas
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(CategorySeeder::class);

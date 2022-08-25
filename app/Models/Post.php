@@ -27,22 +27,22 @@ class Post extends Model
         'jsonData'];
 
 
-        // Set mutator to create unique slug each time we create blogpost
+        // Configure el mutador para crear un slug único cada vez que creamos una publicación
         public function setTitleAttribute($title){
             $this->attributes['title'] = $title;
-            $this->attributes['slug'] = $this->uniqueSlug($title); //"this is title" ==> "this-is-title
+            $this->attributes['slug'] = $this->uniqueSlug($title); //"titulo"
         }
     
         private function uniqueSlug($title){
             $slug = Str::slug($title, '-'); 
-            $count = Post::where('slug', 'LIKE', "{$slug}%")->count(); //slug must start with title str
+            $count = Post::where('slug', 'LIKE', "{$slug}%")->count(); //slug debe comenzar con title str
             $newCount = $count > 0 ? ++$count : ''; 
             return $newCount > 0 ? "$slug-$newCount" : $slug; // if already existe add count+1 to slug title
         }    
 
-    /* Relationships
-     belongsToMany - many-to-many relationship. Posts may belong to many categories/tags (which are shared between posts).
-     belongsTo - inverse one-to-one or many relationship. Post belongs to one user.
+    /* Relaciones
+     belongsToMany: relación de muchos a muchos. Las publicaciones pueden pertenecer a muchas categorías/etiquetas (que se comparten entre publicaciones).
+     belongsTo : relación inversa de uno a uno o de muchos. La publicación pertenece a un usuario.
      */
     public function tag() 
     {
